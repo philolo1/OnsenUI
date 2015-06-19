@@ -1,5 +1,7 @@
 /// <reference path="../typings/angular2/angular2.d.ts" />
 declare var window: {angular2: any, di: any};
+declare var OnsTabElement: {prototype: {_createPageElement: Function}};
+declare var ons: any;
 
 import {
   Compiler,
@@ -7,57 +9,140 @@ import {
   View,
   bootstrap,
   DynamicComponentLoader,
-  ElementRef
+  ElementRef,
+  ViewRef
 } from 'angular2/angular2';
 
 import * as angular2 from 'angular2/angular2';
 import * as di from 'angular2/di';
 
-// Annotation section
+window.angular2 = angular2;
+window.di = di;
+
 @Component({
   selector: 'ons-page'
 })
 @View({
-  template: '<div>ons-page content</div>'
+  template: `
+  <ons-page>
+    <ons-toolbar>
+      <div class="center">Page1</div>
+    </ons-toolbar>
+
+    <div>page1.html content</div>
+
+    <div style="padding: 15px">
+      <input type="text" #text (keyup) value="hogehoge"></input>
+      <div>label: {{text.value}}</div>
+    </div>
+
+    <div style="padding: 15px">
+      <ons-button (click)="doSomething()">Page1#doSomething()</ons-button>
+    </div>
+  </ons-page>
+  `
 })
-class OnsPage {
+class Page1 {
+  constructor() {
+
+  }
+
+  doSomething() {
+    alert("hoge");
+  }
 }
 
-// Annotation section
+@Component({
+  selector: 'ons-page'
+})
+@View({
+  template: `
+  <ons-page>
+    <ons-toolbar>
+      <div class="center">Page2</div>
+    </ons-toolbar>
+
+    <div>page2.html content</div>
+  </ons-page>
+  `
+})
+class Page2 {
+}
+
+@Component({
+  selector: 'ons-page'
+})
+@View({
+  template: `
+  <ons-page>
+    <ons-toolbar>
+      <div class="center">Page3</div>
+    </ons-toolbar>
+
+    <div>page3.html content</div>
+  </ons-page>
+  `
+})
+class Page3 {
+}
+
 @Component({
   selector: 'my-app'
 })
 @View({
   template: `
-    hoge
-    <!--<div><h1>Hello {{ name }}</h1> 
-    <span [style.color]="hoge">foobar</span></div> -->
-    <div class="nazo"></div>
-    <ons-page>hogehoge</ons-page>`
+    <ons-tabbar var="tabbar">
+      <ons-tab page="page1.html" active="true">
+        <div ons-tab-active>
+          HOME
+        </div>
+        <div ons-tab-inactive>
+          home
+        </div>
+      </ons-tab> 
+      <ons-tab
+        icon="ion-chatbox-working"
+        label="Comments"      
+        page="page2.html"></ons-tab>
+      <ons-tab
+        icon="ion-ios-cog"
+        label="Settings"
+        page="page3.html"></ons-tab>
+    </ons-tabbar>
+  `
 })
 class MyAppComponent {
-  name: string;
-  hoge: string;
-  loader: DynamicComponentLoader;
-  elementRef: ElementRef;
-  injector: di.Injector;
-    
-  constructor(loader: DynamicComponentLoader, elementRef: ElementRef, compiler: Compiler, injector: di.Injector) {
-    this.name = 'Alice';
-    this.hoge = 'red';
-    this.loader = loader;
-    this.elementRef = elementRef;
-    this.injector = injector;
-
-    /*
-    compiler.compile(OnsPage).then(function(result) {
-      console.log(result);
-    });
-    window.compiler = compiler;*/
-
-    loader.loadIntoNewLocation(OnsPage, elementRef, '.nazo').then(componentRef => {
-    });
+  constructor() { 
   }
 }
 
-bootstrap(MyAppComponent);
+// extension
+bootstrap(MyAppComponent).then(result => {
+  var injector: di.Injector = result.injector;
+  var loader: DynamicComponentLoader = injector.get(DynamicComponentLoader);
+
+  var dict = {
+    'page1.html': Page1,
+    'page2.html': Page2,
+    'page3.html': Page3
+  };
+
+  // rewrite OnsTabElement method
+  OnsTabElement.prototype._createPageElement = function(page, callback) {
+    // Component
+    if (dict[page]) {
+      loader.loadIntoNewLocation(dict[page], new ElementRef(result._hostComponent.hostView, 0)).then(componentRef => {
+        callback(componentRef.location.domElement);
+      });
+    } else {
+      ons._internal.getPageHTMLAsync(page, function(error, html) {
+        if (error) {
+          throw new Error('Error: ' + error);
+        }
+        var element = ons._util.createElement(html.trim());
+        callback(element);
+      });
+    }
+  };
+});
+

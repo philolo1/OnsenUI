@@ -6,36 +6,18 @@
   <link rel="stylesheet" href="../../build/css/onsenui.css">
   <link rel="stylesheet" href="../../build/css/onsen-css-components.css">
 
+  <script>window.registerElement = undefined;</script>
   <script src="../../build/js/ons-core.js"></script>    
+
   <script src="https://github.jspm.io/jmcriffey/bower-traceur-runtime@0.0.87/traceur-runtime.js"></script>
   <script src="https://jspm.io/system@0.16.js"></script>
-  <script src="../angular2.dev.js"></script>
-
-  <script>
-  </script>
+  <script src="../angular2.a27.dev.js"></script>
   
 </head>
 
 <body>    
   
-  <ons-tabbar var="tabbar">
-    <ons-tab page="page1.html" active="true">
-      <div ons-tab-active>
-        HOME
-      </div>
-      <div ons-tab-inactive>
-        home
-      </div>
-    </ons-tab> 
-    <ons-tab
-      icon="ion-chatbox-working"
-      label="Comments"      
-      page="page2.html"></ons-tab>
-    <ons-tab
-      icon="ion-ios-cog"
-      label="Settings"
-      page="page3.html"></ons-tab>
-  </ons-tabbar>
+  <my-app></my-app>
 
   <script type="text/ons-template" id="page3.html">
     <ons-toolbar>
@@ -43,10 +25,25 @@
     </ons-toolbar>
   </script>
 
-  <my-app></my-app>
-
   <script>
-  var app = System.import('app');
+  var app = System.import('./app');
+
+  // ons-coreを上書きする
+  /*
+  OnsTabElement.prototype._createPageElement = function(page, callback) {
+    /*
+    loader.loadIntoNewLocation(OnsPage, elementRef, '.nazo').then(componentRef => {
+      console.log(componentRef);
+    });
+    ons._internal.getPageHTMLAsync(page, function(error, html) {
+      if (error) {
+        throw new Error('Error: ' + error);
+      }
+      console.log("kita-");
+      callback(ons._util.createElement(html.trim()));
+    });
+  };
+  */
   </script>
  
 </body>

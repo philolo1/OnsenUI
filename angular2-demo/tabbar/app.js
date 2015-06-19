@@ -11,46 +11,94 @@ if (typeof __metadata !== "function") __metadata = function (k, v) {
 };
 /// <reference path="../typings/angular2/angular2.d.ts" />
 var angular2_1 = require('angular2/angular2');
-// Annotation section
-var OnsPage = (function () {
-    function OnsPage() {
+var angular2 = require('angular2/angular2');
+var di = require('angular2/di');
+window.angular2 = angular2;
+window.di = di;
+var Page1 = (function () {
+    function Page1() {
     }
-    OnsPage = __decorate([
+    Page1.prototype.doSomething = function () {
+        alert("hoge");
+    };
+    Page1 = __decorate([
         angular2_1.Component({
             selector: 'ons-page'
         }),
         angular2_1.View({
-            template: '<div>ons-page content</div>'
+            template: "\n  <ons-page>\n    <ons-toolbar>\n      <div class=\"center\">Page1</div>\n    </ons-toolbar>\n\n    <div>page1.html content</div>\n\n    <div style=\"padding: 15px\">\n      <input type=\"text\" #text (keyup) value=\"hogehoge\"></input>\n      <div>label: {{text.value}}</div>\n    </div>\n\n    <div style=\"padding: 15px\">\n      <ons-button (click)=\"doSomething()\">Page1#doSomething()</ons-button>\n    </div>\n  </ons-page>\n  "
         }), 
         __metadata('design:paramtypes', [])
-    ], OnsPage);
-    return OnsPage;
+    ], Page1);
+    return Page1;
 })();
-// Annotation section
+var Page2 = (function () {
+    function Page2() {
+    }
+    Page2 = __decorate([
+        angular2_1.Component({
+            selector: 'ons-page'
+        }),
+        angular2_1.View({
+            template: "\n  <ons-page>\n    <ons-toolbar>\n      <div class=\"center\">Page2</div>\n    </ons-toolbar>\n\n    <div>page2.html content</div>\n  </ons-page>\n  "
+        }), 
+        __metadata('design:paramtypes', [])
+    ], Page2);
+    return Page2;
+})();
+var Page3 = (function () {
+    function Page3() {
+    }
+    Page3 = __decorate([
+        angular2_1.Component({
+            selector: 'ons-page'
+        }),
+        angular2_1.View({
+            template: "\n  <ons-page>\n    <ons-toolbar>\n      <div class=\"center\">Page3</div>\n    </ons-toolbar>\n\n    <div>page3.html content</div>\n  </ons-page>\n  "
+        }), 
+        __metadata('design:paramtypes', [])
+    ], Page3);
+    return Page3;
+})();
 var MyAppComponent = (function () {
-    function MyAppComponent(loader, elementRef, compiler, injector) {
-        this.name = 'Alice';
-        this.hoge = 'red';
-        this.loader = loader;
-        this.elementRef = elementRef;
-        this.injector = injector;
-        /*
-        compiler.compile(OnsPage).then(function(result) {
-          console.log(result);
-        });
-        window.compiler = compiler;*/
-        loader.loadIntoNewLocation(OnsPage, elementRef, '.nazo').then(function (componentRef) {
-        });
+    function MyAppComponent() {
     }
     MyAppComponent = __decorate([
         angular2_1.Component({
             selector: 'my-app'
         }),
         angular2_1.View({
-            template: "\n    hoge\n    <!--<div><h1>Hello {{ name }}</h1> \n    <span [style.color]=\"hoge\">foobar</span></div> -->\n    <div class=\"nazo\"></div>\n    <ons-page>hogehoge</ons-page>"
+            template: "\n    <ons-tabbar var=\"tabbar\">\n      <ons-tab page=\"page1.html\" active=\"true\">\n        <div ons-tab-active>\n          HOME\n        </div>\n        <div ons-tab-inactive>\n          home\n        </div>\n      </ons-tab> \n      <ons-tab\n        icon=\"ion-chatbox-working\"\n        label=\"Comments\"      \n        page=\"page2.html\"></ons-tab>\n      <ons-tab\n        icon=\"ion-ios-cog\"\n        label=\"Settings\"\n        page=\"page3.html\"></ons-tab>\n    </ons-tabbar>\n  "
         }), 
-        __metadata('design:paramtypes', [angular2_1.DynamicComponentLoader, angular2_1.ElementRef, angular2_1.Compiler, (typeof di !== 'undefined' && di.Injector) || Object])
+        __metadata('design:paramtypes', [])
     ], MyAppComponent);
     return MyAppComponent;
 })();
-angular2_1.bootstrap(MyAppComponent);
+// extension
+angular2_1.bootstrap(MyAppComponent).then(function (result) {
+    var injector = result.injector;
+    var loader = injector.get(angular2_1.DynamicComponentLoader);
+    var dict = {
+        'page1.html': Page1,
+        'page2.html': Page2,
+        'page3.html': Page3
+    };
+    // rewrite OnsTabElement method
+    OnsTabElement.prototype._createPageElement = function (page, callback) {
+        // Component
+        if (dict[page]) {
+            loader.loadIntoNewLocation(dict[page], new angular2_1.ElementRef(result._hostComponent.hostView, 0)).then(function (componentRef) {
+                callback(componentRef.location.domElement);
+            });
+        }
+        else {
+            ons._internal.getPageHTMLAsync(page, function (error, html) {
+                if (error) {
+                    throw new Error('Error: ' + error);
+                }
+                var element = ons._util.createElement(html.trim());
+                callback(element);
+            });
+        }
+    };
+});
