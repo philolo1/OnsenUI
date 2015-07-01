@@ -27,7 +27,6 @@ v1.3.4-dev
  * ons-carousel: Carousel will now apply the specified padding to the items.
  * ons-icon: Fixed [#687](https://github.com/OnsenUI/OnsenUI/issues/687).
  * ons-icon: Fixed [#688](https://github.com/OnsenUI/OnsenUI/issues/688).
- * ons-page: Added page life cycle events.
 
 v1.3.3
 ----
