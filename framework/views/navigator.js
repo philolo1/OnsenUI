@@ -74,6 +74,17 @@ limitations under the License.
           }
           return detail;
         }.bind(this));
+
+        this._clearDerivingMethods = $onsen.deriveMethods(this, element[0], [
+          'insertPage',
+          'pushPage',
+          'getDeviceBackButtonHandler',
+          'popPage',
+          'replacePage',
+          'resetToPage',
+          'getCurrentPage',
+          'canPopPage'
+        ]);
       },
 
       _onPrepop: function(event) {
@@ -111,41 +122,14 @@ limitations under the License.
       _destroy: function() {
         this.emit('destroy');
         this._clearDerivingEvents();
+        this._clearDerivingMethods();
         this._element.off('prepop', this._boundOnPrepop);
         this._element.off('postpop', this._boundOnPostpop);
         this._element = this._scope = this._attrs = null;
       },
 
-      insertPage: function(index, page, options) {
-        return this._element[0].insertPage(index, page, options);
-      },
-
-      pushPage: function(page, options) {
-        return this._element[0].pushPage(page, options);
-      },
-
-      getDeviceBackButtonHandler: function() {
-        return this._element[0].getDeviceBackButtonHandler;
-      },
-
       _createPageScope: function() {
          return this._scope.$new();
-      },
-
-      popPage: function(options) {
-        return this._element[0].popPage(options);
-      },
-
-      replacePage: function(page, options) {
-        return this._element[0].replacePage(page, options);
-      },
-
-      resetToPage: function(page, options) {
-        return this._element[0].resetToPage(page, options);
-      },
-
-      getCurrentPage: function() {
-        return this._element[0].getCurrentPage();
       },
 
       /**
@@ -156,13 +140,6 @@ limitations under the License.
       getPages: function() {
         return this._element[0].pages;
       },
-
-      /**
-       * @return {Boolean}
-       */
-      canPopPage: function() {
-        return this._element[0].canPopPage();
-      }
     });
 
     MicroEvent.mixin(NavigatorView);
