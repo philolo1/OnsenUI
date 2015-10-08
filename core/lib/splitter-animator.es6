@@ -178,13 +178,17 @@ limitations under the License.
         animit(this._mask)
           .wait(this._delay)
           .queue({
-            display: 'block'
+            display: 'block',
+            transform: 'translate3d(0px, 0px, 0px)'
           })
           .queue({
             opacity: '1'
           }, {
             duration: this._duration,
             timing: 'linear',
+          })
+          .queue({
+            transform: ''
           })
       );
     }
@@ -222,13 +226,17 @@ limitations under the License.
         animit(this._mask)
           .wait(this._delay)
           .queue({
+            transform: 'translate3d(0px, 0px, 0px)'
+          })
+          .queue({
             opacity: '0'
           }, {
             duration: this._duration,
             timing: 'linear',
           })
           .queue({
-            display: 'none'
+            display: 'none',
+            transform: ''
           })
       );
     }
