@@ -35,10 +35,10 @@ limitations under the License.
     layoutOnOpen() {}
     layoutOnClose() {}
     translate(distance) {}
-    open(done) {
+    open(done, options = {}) {
       done();
     }
-    close(done) {
+    close(done, options = {}) {
       done();
     }
     activate(contentElement, sideElement, maskElement) {}
@@ -149,13 +149,21 @@ limitations under the License.
 
     /**
      * @param {Function} done
+     * @param {Object} [options]
+     * @param {Number} [options.distance]
      */
-    open(done) {
-      const transform = this._side._isLeftSide() ? 'translate3d(100%, 0px, 0px)' : 'translate3d(-100%, 0px, 0px)';
+    open(done, options = {}) {
+      const isLeft = this._side._isLeftSide();
+      const distance = 'distance' in options ? options.distance : 0;
+      const transform = `translate3d(${isLeft ? '' : '-'}100%, 0px, 0px)`;
+      const initialTransform = `translate3d(${isLeft ? '' : '-'}${distance}px, 0px, 0px)`;
 
       animit.runAll(
         animit(this._side)
           .wait(this._delay)
+          .queue({
+            transform: initialTransform
+          })
           .queue({
             transform: transform
           }, {
@@ -183,12 +191,22 @@ limitations under the License.
 
     /**
      * @param {Function} done
+     * @param {Object} [options]
+     * @param {Number} [options.distance]
      */
-    close(done) {
+    close(done, options = {}) {
+      const isLeft = this._side._isLeftSide();
+      const distance = 'distance' in options ? options.distance : 0;
+      const initialTransform = 'distance' in options ?
+        `translate3d(${isLeft ? '' : '-'}${distance}px, 0px, 0px)` :
+        `translate3d(${isLeft ? '' : '-'}100%, 0px, 0px)`;
 
       animit.runAll(
         animit(this._side)
           .wait(this._delay)
+          .queue({
+            transform: initialTransform
+          })
           .queue({
             transform: 'translate3d(0px, 0px, 0px)'
           }, {

@@ -283,9 +283,9 @@ limitations under the License.
         (!this._element._isLeftSide() && direction === 'left' && distance > width * this._element._getThresholdRatioIfShouldOpen());
 
       if (shouldOpen) {
-        this._openMenu();
+        this._openMenu({distance: distance});
       } else {
-        this._closeMenu();
+        this._closeMenu({distance: distance});
       }
     }
 
@@ -349,6 +349,7 @@ limitations under the License.
      * @param {Object} [options]
      * @param {Function} [options.callback]
      * @param {Boolean} [options.withoutAnimation]
+     * @param {Number} [options.distance]
      * @return {Boolean}
      */
     _openMenu(options = {}) {
@@ -378,12 +379,13 @@ limitations under the License.
         this.layout();
         done();
       } else {
+        const openOptions = 'distance' in options ? {distance: options.distance} : {};
         this._state = CollapseMode.CHANGING_STATE;
         this._animator.open(() => {
           this._state = CollapseMode.OPENED_STATE;
           this.layout();
           done();
-        });
+        }, openOptions);
       }
 
       return true;
@@ -403,6 +405,7 @@ limitations under the License.
 
     /**
      * @param {Object} [options]
+     * @param {Number} [options.distance]
      */
     _closeMenu(options = {}) {
       if (this._isLocked()) {
@@ -427,12 +430,13 @@ limitations under the License.
         this.layout();
         done();
       } else {
+        const closeOptions = 'distance' in options ? {distance: options.distance} : {};
         this._state = CollapseMode.CHANGING_STATE;
         this._animator.close(() => {
           this._state = CollapseMode.CLOSED_STATE;
           this.layout();
           done();
-        });
+        }, closeOptions);
       }
 
       return true;
