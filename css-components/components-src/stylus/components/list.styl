@@ -27,12 +27,12 @@ var-list-item-active-background-color = $list-tap-active-background-color
 var-list-item-separator-color = $border-color
 
 var-list-padding = 0
-var-list-header-font-size = 15px
+var-list-header-font-size = 13px
 var-list-border = 1px solid var-list-item-separator-color
 
 var-list-item-margin = 0 0 0 0
-var-list-item-padding = 6px 10px
-var-list-header-padding = 0 0 0 10px
+var-list-item-padding = 0 14px
+var-list-header-padding = 24px 0 2px 14px
 var-list-item-min-height = 44px
 var-list-header-min-height = 24px
 var-list-header-font-weight = var-font-weight--large
@@ -40,7 +40,6 @@ var-list-header-text-shadow = none
 
 var-list-border-top = 1px solid var-list-item-separator-color
 var-list-border-bottom = 1px solid var-list-item-separator-color
-
 
 /*! topdoc
   name: List
@@ -58,30 +57,6 @@ var-list-border-bottom = 1px solid var-list-item-separator-color
       </li>
     </ul>
 */
-
-retina-list-item-border(color = var-list-item-separator-color)
-  +retina-query()
-    border-bottom none
-    background-size 100% 1px
-    background-repeat no-repeat
-    background-position bottom
-    background-image linear-gradient(0deg, color, color 50%, transparent 50%)
-
-retina-list-border(color = var-list-item-separator-color)
-  +retina-query()
-    border none
-    background-size 100% 1px, 100% 1px
-    background-repeat no-repeat
-    background-position bottom, top
-    background-image linear-gradient(0deg, color, color 50%, transparent 50%), linear-gradient(180deg, color, color 50%, transparent 50%)
-
-retina-list-header-border(color = var-tab-bar-border-color)
-  +retina-query()
-    border-top none
-    background-size 100% 1px
-    background-repeat no-repeat
-    background-position top
-    background-image linear-gradient(180deg, color, color 50%, transparent 50%)
 
 list()
   reset-base()
@@ -110,6 +85,7 @@ list__item()
   flex-direction row
   justify-content flex-start
   align-items center
+  background-color var-list-background-color
 
 .list--noborder
   border-top none
@@ -119,54 +95,53 @@ list__item()
   list__header()
   padding var-list-header-padding
   font-size var-list-header-font-size
+  opacity 0.8
   font-weight var-list-header-font-weight
-  background-color var-list-header-background-color
+  background-color transparent
   color var-list-header-color
   text-shadow var-list-header-text-shadow
   border-top none
   border-bottom none
   min-height var-list-header-min-height
   line-height @min-height
-
-.list__header:first-child
-  retina-list-header-border()
+  text-transform uppercase
 
 .list
   list()
   padding var-list-padding
   background-color var-list-background-color
-  border-top var-list-border-top
-  border-bottom var-list-border-bottom
-  background-color var-list-background-color
-  retina-list-border()
+  background-color transparent
 
 .list__item
   list__item()
   padding var-list-item-padding
   margin var-list-item-margin
-  border-top none
-  border-bottom var-list-border
+  border none
   color var-list-item-color
-  background-color transparent
+  background-color var-list-background-color
   min-height var-list-item-min-height
+  background-size 100% 1px
+  background-repeat no-repeat
+  background-position top
+  background-image linear-gradient(90deg, transparent 14px, var-list-item-separator-color 15px)
 
 .list__item_active:active
   background-color var-list-item-active-background-color
   transition none
 
-.list__item:first-child
-  border-top none
-  border-bottom var-list-border
+.list__item:first-of-type
+  border-top var-list-border-top
+  background-image none
 
-.list__item:last-child
-  border-bottom none
+.list__item:last-of-type
+  border-bottom var-list-border-bottom
 
-.list__item:first-child:last-child
-  border-top none
-  border-bottom none
+.list__header + .list__item
+  border-top var-list-border-top
+  background-image none
 
-.list__item:not(:last-child)
-  retina-list-item-border()
+.list__item + .list__header
+  border-top var-list-border-top
 
 /*! topdoc
   name: Noborder List
@@ -261,6 +236,7 @@ list__item()
   order 0
   align-items center
   align-self stretch
+  padding 10px 0
 
 .list__item__center
   display flex
@@ -271,6 +247,7 @@ list__item()
   margin-right auto
   align-items center
   align-self stretch
+  padding 10px 0
 
 .list__item__right
   display flex
@@ -278,6 +255,7 @@ list__item()
   order 2
   align-items center
   align-self stretch
+  padding 10px 0
 
 /*! topdoc
   name: List Item with Chevron
@@ -319,10 +297,10 @@ list__item()
   use: List, List Item with Chevron, Tappable List
   markup:
     <ul class="list list--inset">
-      <li class="list__item list--inset__item list__item--chevron list__item--tappable">
+      <li class="list__item list__item--chevron list__item--tappable">
         List Item with Chevron
       </li>
-      <li class="list__item list--inset__item list__item--chevron list__item--tappable">
+      <li class="list__item list__item--chevron list__item--tappable">
         List Item with Chevron
       </li>
     </ul>
@@ -331,12 +309,9 @@ list__item()
 .list--inset
   margin-left 8px
   margin-right 8px
-  border 1px solid var-list-item-separator-color
+  border-left 1px solid var-list-item-separator-color
+  border-right 1px solid var-list-item-separator-color
   border-radius 4px
-  background-image none
-
-.list--inset__item:not(:last-child)
-  border-bottom 1px solid var-list-item-separator-color
   background-image none
 
 /*! topdoc
@@ -528,8 +503,8 @@ list__item()
 */
 
 .list__item__thumbnail
-  width 40px
-  height 40px
+  width 32px
+  height 32px
   border-radius 6px
   margin-right 10px
   display block
@@ -606,6 +581,7 @@ list__item()
   min-height 56px
   padding 0 0 0 16px
   line-height normal
+  background-image none
 
 .list__item--material__subtitle
   margin-top 4px
@@ -630,6 +606,12 @@ list__item()
 .list__item--material__right
   padding 16px 16px 16px 0px
   line-height 1
+
+.list__item--material:first-of-type
+  border 0
+
+.list__item--material:last-of-type
+  border 0
 
 /*! topdoc
   name: Material List with Header
@@ -656,6 +638,8 @@ list__item()
   color #6c6c6c
   font-weight 500
   padding 12px 16px
+  text-transform none
+  background-color list-background-color
 
 .list__header--material:not(:first-of-type)
   border-top 1px solid #ececec
