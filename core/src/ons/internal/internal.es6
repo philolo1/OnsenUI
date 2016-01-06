@@ -15,8 +15,8 @@ limitations under the License.
 
 */
 
-import platform from '../platform';
-import pageAttributeExpression from '../page-attribute-expression';
+import platform from 'ons/platform';
+import pageAttributeExpression from 'ons/page-attribute-expression';
 
 const internal = {};
 

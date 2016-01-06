@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 */
-import internal from './internal';
-import AnimatorFactory from './animator-factory';
-import ModifierUtil from './modifier-util';
-import {LazyRepeatProvider, LazyRepeatDelegate} from './lazy-repeat';
+import internal from 'ons/internal/internal';
+import AnimatorFactory from 'ons/internal/animator-factory';
+import ModifierUtil from 'ons/internal/modifier-util';
+import {LazyRepeatProvider, LazyRepeatDelegate} from 'ons/internal/lazy-repeat';
 
 internal.AnimatorFactory = AnimatorFactory;
 internal.ModifierUtil = ModifierUtil;

@@ -18,9 +18,10 @@ limitations under the License.
 import util from 'ons/util';
 import ModifierUtil from 'ons/internal/modifier-util';
 import AnimatorFactory from 'ons/internal/animator-factory';
-import {DialogAnimator, IOSDialogAnimator, AndroidDialogAnimator, SlideDialogAnimator} from './animator';
+import {DialogAnimator, IOSDialogAnimator, AndroidDialogAnimator, SlideDialogAnimator} from 'elements/ons-dialog/animator';
 import platform from 'ons/platform';
 import BaseElement from 'ons/base-element';
+import DoorLock from 'ons/door-lock';
 
 const scheme = {
   '.dialog': 'dialog--*',

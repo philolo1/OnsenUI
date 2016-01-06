@@ -20,7 +20,7 @@ import ModifierUtil from 'ons/internal/modifier-util';
 import internal from 'ons/internal/internal';
 import AnimatorFactory from 'ons/internal/animator-factory';
 import BaseElement from 'ons/base-element';
-import {TabbarAnimator, TabbarFadeAnimator, TabbarNoneAnimator, TabbarSlideAnimator} from './animator';
+import {TabbarAnimator, TabbarFadeAnimator, TabbarNoneAnimator, TabbarSlideAnimator} from 'elements/ons-tabbar/animator';
 
 const scheme = {
   '.tab-bar__content': 'tab-bar--*__content',

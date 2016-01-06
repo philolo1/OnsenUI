@@ -20,8 +20,9 @@ import AnimatorFactory from 'ons/internal/animator-factory';
 import internal from 'ons/internal/internal';
 import ModifierUtil from 'ons/internal/modifier-util';
 import BaseElement from 'ons/base-element';
-import SplitterAnimator from './ons-splitter/animator';
+import SplitterAnimator from 'elements/ons-splitter/animator';
 import GestureDetector from 'ons/gesture-detector';
+import DoorLock from 'ons/door-lock';
 
 const SPLIT_MODE = 'split';
 const COLLAPSE_MODE = 'collapse';

@@ -60,6 +60,13 @@ gulp.task('browser-sync', function() {
 // core
 ////////////////////////////////////////
 gulp.task('core', ['prepare'], function() {
+  return gulp.src('core/src/setup.js', {read: false})
+    .pipe($.rollup({
+        sourceMap: true
+    }))
+    .pipe($.sourcemaps.write('.')) // this only works if the sourceMap option is true
+    .pipe(gulp.dest('abc.js'));
+
   return bundleBrowserify(createBrowserify());
 });
 
@@ -67,12 +74,12 @@ function createBrowserify(options) {
   options = options || {};
 
   var b = browserify({
-    entries: ['./core/src/index.es6'],
+    entries: ['./core/src/setup.es6'],
     debug: true,
     extensions: ['.js', '.es6'],
     cache: {},
     packageCache: {},
-    paths: ['./core/src']
+    paths: ['./core/src/', './core/vendor/']
   });
 
   if (options.watch) {
@@ -83,8 +90,7 @@ function createBrowserify(options) {
     .transform('babelify', {
       extensions: ['.es6'],
       presets: ['es2015']
-    })
-    .transform('concatenify');
+    });
 }
 
 function bundleBrowserify(browserify) {

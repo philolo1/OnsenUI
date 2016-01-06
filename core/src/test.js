@@ -1,4 +1,3 @@
-
 import 'microevent';
 import 'setImmediate';
 import 'winstore-jscompat';
@@ -7,14 +6,10 @@ import 'CustomEvent';
 import 'childNodeRemove';
 import 'classList';
 import 'fastclick-patched';
-import 'microevent';
 import 'modernizr-custom';
 import 'promise-7.0.4.min';
-import 'setImmediate';
 import 'viewport';
-
 import 'lib/animit';
-
 import ons from 'ons/ons';
 import util from 'ons/util';
 import GestureDetector from 'ons/gesture-detector';
@@ -25,26 +20,9 @@ import internal from 'ons/internal';
 import orientation from 'ons/orientation';
 import softwareKeyboard from 'ons/software-keyboard';
 import PageAttributeExpression from 'ons/page-attribute-expression';
-import BaseElement from 'ons/base-element';
+import 'ons/base-element';
 import animationOptionsParser from 'ons/animation-options-parser';
 import DoorLock from 'ons/door-lock';
-
-ons._util = util;
-ons._deviceBackButtonDispatcher = deviceBackButtonDispatcher;
-ons._internal = internal;
-ons.GestureDetector = GestureDetector;
-ons.platform = platform;
-ons.softwareKeyboard = softwareKeyboard;
-ons.pageAttributeExpression = PageAttributeExpression;
-ons.orientation = orientation;
-ons.notification = notification;
-ons._animationOptionsParser = animationOptionsParser;
-ons._DoorLock = DoorLock;
-
-window.addEventListener('DOMContentLoaded', function() {
-  ons._deviceBackButtonDispatcher.enable();
-});
-
 import 'elements/ons-alert-dialog';
 import 'elements/ons-back-button';
 import 'elements/ons-bottom-toolbar';
@@ -83,6 +61,22 @@ import 'elements/ons-template';
 import 'elements/ons-toolbar-button';
 import 'elements/ons-toolbar';
 
+ons._util = util;
+ons._deviceBackButtonDispatcher = deviceBackButtonDispatcher;
+ons._internal = internal;
+ons.GestureDetector = GestureDetector;
+ons.platform = platform;
+ons.softwareKeyboard = softwareKeyboard;
+ons.pageAttributeExpression = PageAttributeExpression;
+ons.orientation = orientation;
+ons.notification = notification;
+ons._animationOptionsParser = animationOptionsParser;
+ons._DoorLock = DoorLock;
+
+window.addEventListener('DOMContentLoaded', function() {
+  ons._deviceBackButtonDispatcher.enable();
+});
+
 // fastclick
 window.addEventListener('load', () => FastClick.attach(document.body), false);
 
@@ -115,4 +109,3 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof window !== 'undefined') {
   window.ons = ons;
 }
-

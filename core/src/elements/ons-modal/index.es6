@@ -18,11 +18,12 @@ limitations under the License.
 import util from 'ons/util';
 import ModifierUtil from 'ons/internal/modifier-util';
 import AnimatorFactory from 'ons/internal/animator-factory';
-import ModalAnimator from './animator';
-import FadeModalAnimator from './fade-animator';
+import ModalAnimator from 'elements/ons-modal/animator';
+import FadeModalAnimator from 'elements/ons-modal/fade-animator';
 import platform from 'ons/platform';
 import BaseElement from 'ons/base-element';
 import deviceBackButtonDispatcher from 'ons/device-back-button-dispatcher';
+import DoorLock from 'ons/door-lock';
 
 const scheme = {
   '': 'modal--*',

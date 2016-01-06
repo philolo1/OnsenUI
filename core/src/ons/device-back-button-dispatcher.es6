@@ -15,7 +15,7 @@ limitations under the License.
 
 */
 
-import ons from './ons';
+import ons from 'ons/ons';
 
 
 const util = {

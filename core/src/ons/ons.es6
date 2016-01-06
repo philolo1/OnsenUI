@@ -15,7 +15,8 @@ limitations under the License.
 
 */
 
-import deviceBackButtonDispatcher from './device-back-button-dispatcher';
+import deviceBackButtonDispatcher from 'ons/device-back-button-dispatcher';
+import DoorLock from 'ons/door-lock';
 
 const ons = {};
 

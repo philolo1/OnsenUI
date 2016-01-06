@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 import util from 'ons/util';
-import SplitterAnimator from './animator';
+import SplitterAnimator from 'elements/ons-splitter/animator';
 
 export default class OverlaySplitterAnimator extends SplitterAnimator {
 

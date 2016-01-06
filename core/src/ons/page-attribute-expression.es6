@@ -15,7 +15,7 @@ limitations under the License.
 
 */
 
-import platform from './platform';
+import platform from 'ons/platform';
 
 const pageAttributeExpression = {
   _variables: {},

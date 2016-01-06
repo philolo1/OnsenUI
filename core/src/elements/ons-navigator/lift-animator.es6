@@ -15,7 +15,7 @@ limitations under the License.
 
 */
 
-import NavigatorTransitionAnimator from './animator';
+import NavigatorTransitionAnimator from 'elements/ons-navigator/animator';
 import util from 'ons/util';
 
 /**

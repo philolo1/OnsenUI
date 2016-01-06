@@ -18,8 +18,8 @@ limitations under the License.
 import util from 'ons/util';
 import ModifierUtil from 'ons/internal/modifier-util';
 import AnimatorFactory from 'ons/internal/animator-factory';
-import OverlaySplitterAnimator from './overlay-animator';
-import SplitterAnimator from './animator';
+import OverlaySplitterAnimator from 'elements/ons-splitter/overlay-animator';
+import SplitterAnimator from 'elements/ons-splitter/animator';
 import BaseElement from 'ons/base-element';
 import deviceBackButtonDispatcher from 'ons/device-back-button-dispatcher';
 

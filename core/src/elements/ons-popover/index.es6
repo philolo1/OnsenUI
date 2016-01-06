@@ -18,11 +18,12 @@ limitations under the License.
 import util from 'ons/util';
 import ModifierUtil from 'ons/internal/modifier-util';
 import AnimatorFactory from 'ons/internal/animator-factory';
-import PopoverAnimator from './animator';
-import FadePopoverAnimator from './fade-animator';
+import PopoverAnimator from 'elements/ons-popover/animator';
+import FadePopoverAnimator from 'elements/ons-popover/fade-animator';
 import platform from 'ons/platform';
 import BaseElement from 'ons/base-element';
 import deviceBackButtonDispatcher from 'ons/device-back-button-dispatcher';
+import DoorLock from 'ons/door-lock';
 
 const scheme = {
   '.popover': 'popover--*',

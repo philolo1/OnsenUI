@@ -16,7 +16,7 @@ limitations under the License.
 
 */
 
-import ModalAnimator from './animator';
+import ModalAnimator from 'elements/ons-modal/animator';
 
 /**
  * iOS style animator for dialog.

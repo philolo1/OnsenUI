@@ -15,10 +15,7 @@ limitations under the License.
 
 */
 
-
-window.DoorLock = (() => {
-  'use strict';
-
+const DoorLock = (() => {
   const generateId = (function() {
     let i = 0;
     return function() {
@@ -101,3 +98,5 @@ window.DoorLock = (() => {
 
   return DoorLock;
 })();
+
+export default DoorLock;

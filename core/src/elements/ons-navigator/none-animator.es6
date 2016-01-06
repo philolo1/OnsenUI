@@ -15,7 +15,7 @@ limitations under the License.
 
 */
 
-import NavigatorTransitionAnimator from './animator';
+import NavigatorTransitionAnimator from 'elements/ons-navigator/animator';
 
 export default class NoneNavigatorTransitionAnimator extends NavigatorTransitionAnimator {
   constructor(options) {

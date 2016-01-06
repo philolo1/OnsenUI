@@ -15,7 +15,7 @@ limitations under the License.
 
 */
 
-import PopoverAnimator from './animator';
+import PopoverAnimator from 'elements/ons-popover/animator';
 
 export default class FadePopoverAnimator extends PopoverAnimator {
   constructor(options) {

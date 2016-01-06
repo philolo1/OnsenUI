@@ -15,8 +15,8 @@ limitations under the License.
 
 */
 
-import util from '../util';
-import ons from '../ons';
+import util from 'ons/util';
+import ons from 'ons/ons';
 
 export default class AnimatorFactory {
 

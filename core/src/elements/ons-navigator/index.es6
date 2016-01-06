@@ -19,16 +19,17 @@ import util from 'ons/util';
 import internal from 'ons/internal';
 import ModifierUtil from 'ons/internal/modifier-util';
 import AnimatorFactory from 'ons/internal/animator-factory';
-import NavigatorTransitionAnimator from './animator';
-import IOSSlideNavigatorTransitionAnimator from './ios-slide-animator';
-import SimpleSlideNavigatorTransitionAnimator from './simple-slide-animator';
-import LiftNavigatorTransitionAnimator from './lift-animator';
-import FadeNavigatorTransitionAnimator from './fade-animator';
-import NoneNavigatorTransitionAnimator from './none-animator';
+import NavigatorTransitionAnimator from 'elements/ons-navigator/animator';
+import IOSSlideNavigatorTransitionAnimator from 'elements/ons-navigator/ios-slide-animator';
+import SimpleSlideNavigatorTransitionAnimator from 'elements/ons-navigator/simple-slide-animator';
+import LiftNavigatorTransitionAnimator from 'elements/ons-navigator/lift-animator';
+import FadeNavigatorTransitionAnimator from 'elements/ons-navigator/fade-animator';
+import NoneNavigatorTransitionAnimator from 'elements/ons-navigator/none-animator';
 import platform from 'ons/platform';
 import BaseElement from 'ons/base-element';
-import NavigatorPage from './navigator-page';
+import NavigatorPage from 'elements/ons-navigator/navigator-page';
 import deviceBackButtonDispatcher from 'ons/device-back-button-dispatcher';
+import DoorLock from 'ons/door-lock';
 
 const _animatorDict = {
   'default': platform.isAndroid() ? SimpleSlideNavigatorTransitionAnimator : IOSSlideNavigatorTransitionAnimator,

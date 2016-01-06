@@ -15,8 +15,8 @@ limitations under the License.
 
 */
 
-import util from '../util';
-import platform from '../platform';
+import util from 'ons/util';
+import platform from 'ons/platform';
 
 export class LazyRepeatDelegate {
   /**

@@ -15,7 +15,7 @@ limitations under the License.
 
 */
 
-import animationOptionsParser from './animation-options-parser';
+import animationOptionsParser from 'ons/animation-options-parser';
 
 const util = {};
 
