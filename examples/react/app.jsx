@@ -1,17 +1,15 @@
-var myhelp = document.createElement;
+var ReactTestUtils = React.addons.TestUtils;
 
-
-var isPage =  function(page) {
-    return ReactTestUtils.isElementOfType(page, OnsPage);
+var reactUtil = {};
+reactUtil.isOnsPage =  function(obj) {
+    return ReactTestUtils.isElementOfType(obj, OnsPage);
 };
 
-var isToolBar = function(obj) {
+reactUtil.isOnsToolBar = function(obj) {
   return ReactTestUtils.isElementOfType(obj, OnsToolbar);
 }
 
 
-// this will not be called if 
-// OnsNavigator is the parent
 var OnsPage = React.createClass({
 
   getInitialState: function() {
@@ -21,13 +19,12 @@ var OnsPage = React.createClass({
   },
 
   render: function() {
-    // console.log(this.props);
     var toolbar;
     var otherChildren = [];
 
     for (var i=0; i < this.props.children.length; i++) {
 
-      if (isToolBar(this.props.children[i])) {
+      if (reactUtil.isOnsToolBar(this.props.children[i])) {
         toolbar = this.props.children[i];
       } else {
         otherChildren.push(this.props.children[i]);
@@ -54,48 +51,30 @@ var OnsPage = React.createClass({
 });
 
 var OnsNavigator = React.createClass({
-
-  
   componentDidMount: function() {
-    // console.log('mounting ons navigator');
-
     var node = ReactDOM.findDOMNode(this);
     var page = this.props.children;
 
-    if (!isPage(page)) {
+    if (!reactUtil.isOnsPage(page)) {
       throw new Error("OnsNavigator has to contain exactly one child of type OnsPage");
     }
     
     var lastLink = window.OnsNavigatorElement.rewritables.link;
     window.OnsNavigatorElement.rewritables.link = function(navigatorElement, target, options, callback) {
-      var node2 = ReactDOM.findDOMNode(this);
-
-      // console.log('node 2');
-    
        if (node.firstChild._pages.length == 1) {
          node.firstChild.innerHTML = target.outerHTML;
-       } else {
-         // var myNode = node2.firstChild;
-         // var index = node.firstChild._pages.length;
-         // console.log('delete: ');
-         // console.log(myNode.children.length);
-         // myNode.removeChild(myNode.children[index-1]);
-
-
        }
        lastLink(navigatorElement, target, options, callback);
-    }.bind(this);
-    
+    };
     
      this.elements = [];
      this.elements.push({elem: this.props.children});
     
-     // console.log(this.elements);
-    
      this.myDom = ReactDOM.render(
        <ons-navigator {...this.props}>
-             {page}
-       </ons-navigator>, node);
+          {page}
+       </ons-navigator>, node
+     );
   },
 
   popPage: function() {
@@ -107,9 +86,7 @@ var OnsNavigator = React.createClass({
 
     for (var i =0; i < this.elements.length; i++) {
       help.push(this.elements[i].elem);
-      help.key = i;
     }
-
   
     var node = ReactDOM.findDOMNode(this);
         var node2 =ReactDOM.render(
@@ -149,10 +126,9 @@ var OnsNavigator = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var templatePage = templateComponent.props.children;
 
-    if (!isPage(templatePage)) {
+    if (!reactUtil.isOnsPage(templatePage)) {
       throw new Error("OnsNavigator has to contain exactly one child of type OnsPage");
     }
-
 
     var prevStyle = templatePage.props.style;
 
@@ -214,7 +190,7 @@ var OnsNavigator = React.createClass({
 var OnsTemplate= React.createClass({
   componentDidMount: function() {
     var node = ReactDOM.findDOMNode(this);
-    if (!isPage(this.props.children)) {
+    if (!reactUtil.isOnsPage(this.props.children)) {
       throw new Error("OnsTemplate only child should be of type OnsPage");
     }
   },
@@ -223,7 +199,6 @@ var OnsTemplate= React.createClass({
        </ons-template>;
   }
 });
-
 
 var MyText = React.createClass({
   render: function() {
@@ -271,18 +246,14 @@ var  MyApp2 = React.createClass({
 
 
   popPage: function() {
-    //  console.log('pop page');
     this.refs.myNav.popPage();
   },
 
   myTempClicked: function() {
-    //console.log('my Temp clicked');
-    console.log(this.refs.myTemp);
     this.refs.myTemp.setState({changeLook: true});
   },
 
   changeText1: function() {
-    console.log('change text');
     this.setState({text1: 'new Text'});
   },
   changeText2: function() {
