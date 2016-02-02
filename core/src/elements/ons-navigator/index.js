@@ -510,13 +510,22 @@ class NavigatorElement extends BaseElement {
             const enterPage = this._pages.slice(-1)[0];
 
             this.appendChild(element);
-            leavePage.element._hide();
-            enterPage.element._show();
+            setImmediate(function () {
+              leavePage.element._hide();
+            });
+
+            setImmediate(function () {
+              enterPage.element._show();
+            });
 
             options.animator.push(enterPage, leavePage, done);
           } else {
+            this.innerHTML = '';
             this.appendChild(element);
-            element._show();
+
+            setImmediate(function () {
+              element._show();
+            });
 
             done();
           }

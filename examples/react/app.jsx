@@ -21,7 +21,7 @@ var OnsPage = React.createClass({
   },
 
   render: function() {
-    console.log(this.props);
+    // console.log(this.props);
     var toolbar;
     var otherChildren = [];
 
@@ -57,7 +57,7 @@ var OnsNavigator = React.createClass({
 
   
   componentDidMount: function() {
-    console.log('mounting ons navigator');
+    // console.log('mounting ons navigator');
 
     var node = ReactDOM.findDOMNode(this);
     var page = this.props.children;
@@ -69,10 +69,20 @@ var OnsNavigator = React.createClass({
     var lastLink = window.OnsNavigatorElement.rewritables.link;
     window.OnsNavigatorElement.rewritables.link = function(navigatorElement, target, options, callback) {
       var node2 = ReactDOM.findDOMNode(this);
+
+      // console.log('node 2');
     
        if (node.firstChild._pages.length == 1) {
          node.firstChild.innerHTML = target.outerHTML;
-       }      
+       } else {
+         // var myNode = node2.firstChild;
+         // var index = node.firstChild._pages.length;
+         // console.log('delete: ');
+         // console.log(myNode.children.length);
+         // myNode.removeChild(myNode.children[index-1]);
+
+
+       }
        lastLink(navigatorElement, target, options, callback);
     }.bind(this);
     
@@ -80,7 +90,7 @@ var OnsNavigator = React.createClass({
      this.elements = [];
      this.elements.push({elem: this.props.children});
     
-     console.log(this.elements);
+     // console.log(this.elements);
     
      this.myDom = ReactDOM.render(
        <ons-navigator {...this.props}>
@@ -90,8 +100,7 @@ var OnsNavigator = React.createClass({
 
   popPage: function() {
     var navNode = ReactDOM.findDOMNode(this).firstChild;
-    console.log(navNode.popPage());
-
+    navNode.popPage();
     this.elements.pop();
 
     var help = [];
@@ -146,8 +155,6 @@ var OnsNavigator = React.createClass({
 
 
     var prevStyle = templatePage.props.style;
-    console.log('prevStyle');
-    console.log(prevStyle);
 
     if (prevStyle) {
       prevStyle.display = 'none' ;
@@ -155,25 +162,19 @@ var OnsNavigator = React.createClass({
       prevStyle = {display: 'none'}
     }
 
-    console.log(prevStyle);
 
      var myChildren =  React.cloneElement(templatePage, {
        style: prevStyle,
        options: options
         });
 
-    console.log('myChildren props');
-    console.log(templatePage.props.style);
 
     var myElement = ReactTestUtils.renderIntoDocument(myChildren);
-    console.log('page style');
-    console.log(templatePage);
 
 
 
     var pageNumber = node.firstChild.pages.length;
 
-    console.log('pageNumber : ' + pageNumber);
     var self = this;
 
     var help = [];
@@ -184,6 +185,7 @@ var OnsNavigator = React.createClass({
 
     help.push(myChildren);
 
+
       var node2 =ReactDOM.render(
         <ons-navigator >
           {help}
@@ -191,20 +193,21 @@ var OnsNavigator = React.createClass({
         node
       );
 
+      var myFun = function(event) {
+        document.removeEventListener("init", myFun);
+            var html =  node2.children[pageNumber].outerHTML;
+            html = html.replace('display:none;', '');
+          
+            var onsNode = node.firstChild;
+
+            onsNode._pushPage(null, {pageHTML: html}).then(function() {
+                 node2.removeChild(node2.children[pageNumber]);
+              }
+            );
+    };
+
+    document.addEventListener("init", myFun);
     this.elements.push({elem: templateComponent.props.children});
-
-
-    // TODO see when it is funished getting the component
-     setTimeout(function () {
-        var html =  node2.children[pageNumber].outerHTML;
-        html = html.replace('display:none;', '');
-       
-        node2.removeChild(node2.children[pageNumber]);
-        var onsNode = node.firstChild;
-        console.log('pushPage');
-        onsNode._pushPage(null, {pageHTML: html});
-    
-     }, 1000/60 );
   }, 
 });
 
@@ -216,7 +219,6 @@ var OnsTemplate= React.createClass({
     }
   },
   render: function() {
-
     return <ons-template>
        </ons-template>;
   }
@@ -232,7 +234,7 @@ var MyText = React.createClass({
           <ons-button onClick={this.props.clicked}> Press me </ons-button>
         </ons-col>
       </ons-row>
-       );
+    );
   }
 
 });
@@ -269,12 +271,12 @@ var  MyApp2 = React.createClass({
 
 
   popPage: function() {
-    console.log('pop page');
+    //  console.log('pop page');
     this.refs.myNav.popPage();
   },
 
   myTempClicked: function() {
-    console.log('my Temp clicked');
+    //console.log('my Temp clicked');
     console.log(this.refs.myTemp);
     this.refs.myTemp.setState({changeLook: true});
   },
@@ -321,8 +323,6 @@ var  MyApp2 = React.createClass({
            <MyText text={this.state.text2} clicked={this.changeText2}/>
          </OnsPage>
          </OnsTemplate>
-
-
 
          <OnsTemplate ref="page3">
            <OnsPage>
