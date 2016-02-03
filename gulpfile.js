@@ -35,6 +35,7 @@ var fs = require('fs');
 var argv = require('yargs').argv;
 var npm  = require('rollup-plugin-npm');
 var babel = require('rollup-plugin-babel');
+var babel2 = require('gulp-babel');
 
 ////////////////////////////////////////
 // browser-sync
@@ -212,6 +213,25 @@ gulp.task('prepare', ['html2js'], function() {
   var onlyES6;
 
   return merge(
+
+    // react-onsenui.js
+    gulp.src([
+
+      'bindings/react/components/*.jsx'
+    ])
+   .pipe(babel2({ presets: ['react'] }))
+   .pipe($.concat('react-onsenui.js'))
+   .pipe(gulp.dest('jsx/'))
+   .pipe($.header('/*! react-onsenui.js for <%= pkg.name %> - v<%= pkg.version %> - ' + dateformat(new Date(), 'yyyy-mm-dd') + ' */\n', {pkg: pkg}))
+   .pipe(gulp.dest('build/js/')),
+
+    // react.js , react-dom.js , react-addons.js
+    gulp.src('bindings/react/lib/react/*.js')
+      .pipe(gulp.dest('build/js/react/')),
+
+    // babel for jsx
+    gulp.src('bindings/react/lib/babel/*.js')
+      .pipe(gulp.dest('build/js/react/')),
 
     // angular-onsenui.js
     gulp.src([
