@@ -68,69 +68,99 @@ var OnsNavigator = React.createClass({
     );
   },
 
-  pushComponent: function(templateComponent, options) {
-    var templateNode = ReactDOM.findDOMNode(templateComponent);
 
-    var node = ReactDOM.findDOMNode(this);
-    var templatePage = templateComponent.props.children;
-
-    if (!reactUtil.isOnsPage(templatePage)) {
-      throw new Error("OnsNavigator has to contain exactly one child of type OnsPage");
+  pushComponent: function(reactPage) {
+    if (!reactUtil.isOnsPage(reactPage)) {
+      throw new Error("The component that react pushes needs to render to <ons-page>");
     }
 
-    var prevStyle = templatePage.props.style;
+    this.elements.push({elem: reactPage});
 
-    if (prevStyle) {
-      prevStyle.display = 'none' ;
-    } else {
-      prevStyle = {display: 'none'}
-    }
+    var htmlString = ReactDOMServer.renderToString(reactPage);
 
+    var elements = this.elements;
 
-     var myChildren =  React.cloneElement(templatePage, {
-       style: prevStyle,
-       options: options
-        });
+    var node =  ReactDOM.findDOMNode(this)
+    node.firstChild._pushPage(null, {pageHTML: htmlString}).then(function() {
+       var help = [];
+       for (var i =0; i < elements.length; i++) {
+         help.push(elements[i].elem);
+       }
 
+       var node2 =ReactDOM.render(
+         <ons-navigator >
+           {help}
+         </ons-navigator>, 
+         node
+       );
 
-    var myElement = ReactTestUtils.renderIntoDocument(myChildren);
+       console.log('node 2');
+       console.log(node2.children.length);
 
+       node2._pages[elements.length-1].element = node2.children[elements.length-1];
 
+       console.log(node2.children);
 
-    var pageNumber = node.firstChild.pages.length;
+       node2.removeChild(node2.children[elements.length]);
+    });
+  },
 
-    var self = this;
-
-    var help = [];
-
-    for (var i =0; i < this.elements.length; i++) {
-      help.push(this.elements[i].elem);
-    }
-
-    help.push(myChildren);
-
-
-      var node2 =ReactDOM.render(
-        <ons-navigator >
-          {help}
-        </ons-navigator>, 
-        node
-      );
-
-      var myFun = function(event) {
-        document.removeEventListener("init", myFun);
-            var html =  node2.children[pageNumber].outerHTML;
-            html = html.replace('display:none;', '');
-          
-            var onsNode = node.firstChild;
-
-            onsNode._pushPage(null, {pageHTML: html}).then(function() {
-                 node2.removeChild(node2.children[pageNumber]);
-              }
-            );
-    };
-
-    document.addEventListener("init", myFun);
-    this.elements.push({elem: templateComponent.props.children});
-  }, 
+  // pushTemplate: function(templateComponent) {
+  //   var templateNode = ReactDOM.findDOMNode(templateComponent);
+  //
+  //   var node = ReactDOM.findDOMNode(this);
+  //   var templatePage = templateComponent.props.children;
+  //
+  //   if (!reactUtil.isOnsPage(templatePage)) {
+  //     throw new Error("OnsNavigator has to contain exactly one child of type OnsPage");
+  //   }
+  //
+  //   var prevStyle = el.props.style;
+  //
+  //   if (prevStyle) {
+  //     prevStyle.display = 'none' ;
+  //   } else {
+  //     prevStyle = {display: 'none'}
+  //   }
+  //
+  //   var myChildren =  React.cloneElement(el, {
+  //     style: prevStyle
+  //   });
+  //
+  //   var pageNumber = node.firstChild.pages.length;
+  //
+  //   var self = this;
+  //
+  //   var help = [];
+  //
+  //   for (var i =0; i < this.elements.length; i++) {
+  //     help.push(this.elements[i].elem);
+  //   }
+  //
+  //   help.push(myChildren);
+  //
+  //
+  //     var node2 =ReactDOM.render(
+  //       <ons-navigator >
+  //         {help}
+  //       </ons-navigator>, 
+  //       node
+  //     );
+  //
+  //     var myFun = function(event) {
+  //       document.removeEventListener("init", myFun);
+  //           var html =  node2.children[pageNumber].outerHTML;
+  //           html = html.replace('display:none;', '');
+  //         
+  //           var onsNode = node.firstChild;
+  //
+  //           onsNode._pushPage(null, {pageHTML: html}).then(function() {
+  //                node2.removeChild(node2.children[pageNumber]);
+  //             }
+  //           );
+  //   };
+  //
+  //   document.addEventListener("init", myFun);
+  //   this.elements.push({elem: templateComponent.props.children});
+  // }, 
 });
