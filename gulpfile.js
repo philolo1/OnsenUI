@@ -190,7 +190,7 @@ gulp.task('clean', function() {
 ////////////////////////////////////////
 gulp.task('minify-js', function() {
   return merge(
-    gulp.src('build/js/{onsenui,angular-onsenui}.js')
+    gulp.src('build/js/{onsenui,angular-onsenui,react-onsenui}.js')
       .pipe($.uglify({
         mangle: false,
         preserveComments: function(node, comment) {
