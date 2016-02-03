@@ -215,10 +215,7 @@ gulp.task('prepare', ['html2js'], function() {
   return merge(
 
     // react-onsenui.js
-    gulp.src([
-
-      'bindings/react/components/*.jsx'
-    ])
+    gulp.src( 'bindings/react/components/*.jsx')
    .pipe(babel2({ presets: ['react'] }))
    .pipe($.concat('react-onsenui.js'))
    .pipe(gulp.dest('jsx/'))
@@ -358,6 +355,7 @@ function distFiles() {
     '!build/docs/',
     '!build/js/angular/**/*',
     '!build/js/angular/',
+    '!build/js/react/',
     '!build/onsenui.zip',
     'bower.json',
     'package.json',
