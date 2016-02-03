@@ -103,6 +103,7 @@ gulp.task('watch-core', ['prepare', 'core'], function() {
   return gulp.watch(['core/src/*.js', 'core/src/**/*.js'], ['core']);
 });
 
+
 ////////////////////////////////////////
 // core-test
 ////////////////////////////////////////
@@ -376,6 +377,8 @@ gulp.task('dist-no-build', [], distFiles);
 ////////////////////////////////////////
 gulp.task('serve', ['watch-eslint', 'prepare', 'browser-sync', 'watch-core'], function() {
   gulp.watch(['bindings/angular1/templates/*.tpl'], ['html2js']);
+
+  gulp.watch(['./bindings/react/components/*.jsx'], ['prepare']);
 
   var watched = [
     'bindings/angular1/*/*',
