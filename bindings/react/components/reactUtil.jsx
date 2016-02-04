@@ -1,15 +1,13 @@
 var ReactTestUtils = React.addons.TestUtils;
 
 var reactUtil = {};
-reactUtil.isOnsPage =  function(obj) {
-
+reactUtil.rendersToOnsPage =  function(obj) {
   // simulate render to see if it is really onsPage
-  /*  var htmlString = ReactDOMServer.renderToString(obj);
-      return htmlString.startsWith('<ons-page');
-      */
-     return true;
+   var htmlString = ReactDOMServer.renderToString(obj);
+   return htmlString.startsWith('<ons-page');
 };
 
-reactUtil.isOnsToolBar = function(obj) {
-  return ReactTestUtils.isElementOfType(obj, OnsToolbar);
+reactUtil.rendersToOnsToolbar = function(obj) {
+  var htmlString = ReactDOMServer.renderToString(obj);
+  return htmlString.startsWith('<ons-toolbar');
 };

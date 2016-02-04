@@ -3,7 +3,7 @@ var OnsNavigator = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var page = this.props.children;
 
-    if (!reactUtil.isOnsPage(page)) {
+    if (!reactUtil.rendersToOnsPage(page)) {
       throw new Error("OnsNavigator has to contain exactly one child of type OnsPage");
     }
     
@@ -70,7 +70,7 @@ var OnsNavigator = React.createClass({
 
 
   pushComponent: function(reactPage) {
-    if (!reactUtil.isOnsPage(reactPage)) {
+    if (!reactUtil.rendersToOnsPage(reactPage)) {
       throw new Error("The component that react pushes needs to render to <ons-page>");
     }
 
