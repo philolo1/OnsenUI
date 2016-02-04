@@ -11,21 +11,21 @@ var MyPage = React.createClass({
 
   render: function() {
 
-    var popButton;
-
-    if (this.props.popPage) { 
-      popButton =<ons-button style={{marginRight: 10}} onClick={this.popPage}> Pop </ons-button>
-    }
-
     return <OnsPage>
       <ons-toolbar>
+        <div className="left"><ons-back-button>Back</ons-back-button></div>
         <div className="center"> {this.props.title} </div>
       </ons-toolbar>
-      <div style={{display: 'flex'}}> 
-        <div style={{flex: 1}} />
-        {popButton}
-        <ons-button onClick={this.pushPage}> Push </ons-button>
-        <div style={{flex: 1}} />
+      <div style={{textAlign: 'center'}}>
+        <br />
+      <ons-button modifier="light" onClick={this.props.insertPage}> 
+        Insert Page to Background 
+      </ons-button>
+      <br />
+     <ons-button modifier="light" onClick={this.props.popPage}> 
+        Pop Page 
+      </ons-button>
+
       </div>
     </OnsPage>
   }
@@ -37,32 +37,24 @@ var MyNav  = React.createClass({
     return {};
   },
 
-
   popPage: function() {
-
-    this.counter--;
     this.refs.navi.popPage();
   },
 
-  pushPage: function() {
-    //console.log('push page');
-    // this.setState({navNumber: this.state.navNumber +1});
-
-    this.counter++;
-    var navTitle = "Navigator "+ this.counter;
-
-    this.refs.navi.pushComponent(
-      <MyPage title={navTitle} popPage={this.popPage} pushPage={this.pushPage} />
-    );
-  },
-
-  componentDidMount: function() {
-    this.counter = 1;
+  insertPage: function() {
+    //this.refs.nav
+    console.log('insert in background');
+    console.log(this.refs.navi)
+    this.refs.navi.insertComponent(
+      <MyPage title="Back Page"
+      insertPage={this.insertPage} popPage={this.popPage}
+      
+      />);
   },
   
   render: function() {
     return <OnsNavigator ref="navi">
-      <MyPage title="Navigator 1" pushPage={this.pushPage} />
+      <MyPage title="Navigator" insertPage={this.insertPage} popPage={this.popPage}/>
     </OnsNavigator>
   }
 });
