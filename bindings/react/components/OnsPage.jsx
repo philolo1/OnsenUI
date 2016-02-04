@@ -4,13 +4,13 @@ var OnsPage = React.createClass({
     var toolbar;
     var otherChildren = [];
 
-    for (var i=0; i < this.props.children.length; i++) {
-      if (reactUtil.rendersToOnsToolbar(this.props.children[i])) {
-        toolbar = this.props.children[i];
+    React.Children.forEach(this.props.children, function(child) {
+      if (reactUtil.rendersToOnsToolbar(child)) {
+        toolbar = child;
       } else {
-        otherChildren.push(this.props.children[i]);
+        otherChildren.push(child);
       }
-    }
+    });
 
     return <ons-page   {...this.props}  _compiled >
         {toolbar}
