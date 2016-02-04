@@ -18,9 +18,9 @@ var MyPage = React.createClass({
     }
 
     return <OnsPage>
-      <OnsToolbar>
+      <ons-toolbar>
         <div className="center"> {this.props.title} </div>
-      </OnsToolbar>
+      </ons-toolbar>
       <div style={{display: 'flex'}}> 
         <div style={{flex: 1}} />
         {popButton}

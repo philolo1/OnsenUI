@@ -1,30 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" ng-app="myApp">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
+  <title>Page | Onsen UI</title>
   <link rel="stylesheet" href="../styles/app.css"/>
   <link rel="stylesheet" href="../../build/css/onsenui.css">
   <link rel="stylesheet" href="../../build/css/onsen-css-components.css">
 
-  <title>Onsen UI React Example</title>
-
-  <!-- Ons example -->
-  <script src="../../build/js/onsenui.js"></script> 
-  <script src="../../build/js/react/react-with-addons.js"></script> 
-  <script src="../../build/js/react/react-dom.js"></script> 
-  <script src="../../build/js/react/babel.min.js"></script> 
-  <script src="../../build/js/react/react-dom-server.js"></script> 
-  <script src="../../build/js/react-onsenui.js"></script> 
-  <script type="text/babel" src="app.jsx"></script> 
-
+  <script src="../../build/js/onsenui.js"></script>
+  <script src="../../build/js/angular/angular.js"></script>
+  <script src="../../build/js/angular-onsenui.js"></script>
+  <script src="../app.js"></script>
 </head>
-
 <body>
-  <!-- Cordova reference -->
-  <script src="cordova.js"></script>
-  <!-- -->
-  <div id="app" >
-  </div>
-
+  <ons-page>
+    <div style="text-align: center">
+      <h1>Page Content</h1>
+    </div>
+  </ons-page>
 </body>
 </html>
