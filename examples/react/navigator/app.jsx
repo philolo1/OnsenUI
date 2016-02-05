@@ -60,8 +60,6 @@ var MyNav  = React.createClass({
       />, pos
     );
   },
-
-
   
   render: function() {
     return <OnsNavigator ref="navi">
