@@ -64,26 +64,27 @@ var OnsNavigator = React.createClass({
   render: function() {
     return <div />;
   }, 
-  // componentWillReceiveProps: function(newProps) {
-  //   var props = newProps || this.props;
-  //
-  //   var help = [];
-  //   this.elements = [];
-  //   this.elements.push({elem: props.children});
-  //
-  //   for (var i =0; i < this.elements.length; i++) {
-  //     help.push(this.elements[i].elem);
-  //   }
-  //
-  //   var node = ReactDOM.findDOMNode(this);
-  //
-  //   ReactDOM.render(
-  //     <ons-navigator >
-  //       {help}
-  //     </ons-navigator>, 
-  //     node
-  //   );
-  // },
+
+  componentWillReceiveProps: function(newProps) {
+    var props = newProps || this.props;
+  
+    var help = [];
+    this.elements = [];
+    this.elements.push({elem: props.children});
+  
+    for (var i =0; i < this.elements.length; i++) {
+      help.push(this.elements[i].elem);
+    }
+  
+    var node = ReactDOM.findDOMNode(this);
+  
+    ReactDOM.render(
+      <ons-navigator >
+        {help}
+      </ons-navigator>, 
+      node
+    );
+  },
 
 
   insertComponent: function(reactPage) {
@@ -101,7 +102,7 @@ var OnsNavigator = React.createClass({
     console.log(this.elements);
 
 
-    this.elements.splice(0, 0, {elem: reactPage});
+    this.elements.splice(this.elements.length -1, 0, {elem: reactPage});
 
     console.log(this.elements);
 
@@ -111,7 +112,6 @@ var OnsNavigator = React.createClass({
     }
 
     var elements = this.elements;
-    //
     node.firstChild.insertPage(-1, '', {pageHTML: htmlString})
     .then(function() {
        var node2 =ReactDOM.render(
@@ -120,13 +120,14 @@ var OnsNavigator = React.createClass({
          </ons-navigator>, 
          node
        );
-       node.firstChild._pages[0].element = node.firstChild.children[0];
-       node.firstChild._pages[1].element = node.firstChild.children[2];
-       node.firstChild.removeChild(node.firstChild.children[1]);
-    });
 
-
-
+       for (var i=0; i < elements.length -1; i++) {
+          var index = i;
+          if (index >= elements.length-1) index++;
+            node.firstChild._pages[i].element = node.firstChild.children[index];
+          }
+          node.firstChild.removeChild(node.firstChild.children[elements.length-1]);
+       });
   },
 
 

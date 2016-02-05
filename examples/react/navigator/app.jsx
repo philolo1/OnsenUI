@@ -80,10 +80,11 @@ var MyNav  = React.createClass({
     console.log(this.refs.navi)
     this.counter++;
     var counterStr = ""+ this.counter;
+    var Title = "Back Page " + this.counter;
     console.log('counterStr');
     console.log(counterStr);
     this.refs.navi.insertComponent(
-      <MyPage key={counterStr} title="Back Page"
+      <MyPage key={counterStr} title={Title}
         insertPage={this.insertPage} popPage={this.popPage}
       />
     );
