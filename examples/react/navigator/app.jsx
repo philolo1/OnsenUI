@@ -31,9 +31,42 @@ var MyPage = React.createClass({
   }
 });
 
+var MyPage2 = React.createClass({
+  getInitialState: function() {
+      return { };
+  },
+  pushPage : function() {
+   this.props.pushPage();
+  },
+  popPage : function() {
+   this.props.popPage();
+  },
+  pushButton: function() {
+   console.log('push button'); 
+  },
+
+  render: function() {
+    console.log('button rendered');
+
+    return <OnsPage>
+      <ons-toolbar>
+        <div className="center"> {this.props.title} </div>
+      </ons-toolbar>
+      <div style={{textAlign: 'center'}}>
+        <br />
+      <ons-button  onClick={this.pushButton}> 
+        Push me 
+      </ons-button>
+
+      </div>
+    </OnsPage>
+  }
+})
+
 
 var MyNav  = React.createClass({
   getInitialState: function() {
+    this.counter = 0;
     return {};
   },
 
@@ -45,16 +78,20 @@ var MyNav  = React.createClass({
     //this.refs.nav
     console.log('insert in background');
     console.log(this.refs.navi)
+    this.counter++;
+    var counterStr = ""+ this.counter;
+    console.log('counterStr');
+    console.log(counterStr);
     this.refs.navi.insertComponent(
-      <MyPage title="Back Page"
-      insertPage={this.insertPage} popPage={this.popPage}
-      
-      />);
+      <MyPage key={counterStr} title="Back Page"
+        insertPage={this.insertPage} popPage={this.popPage}
+      />
+    );
   },
   
   render: function() {
     return <OnsNavigator ref="navi">
-      <MyPage title="Navigator" insertPage={this.insertPage} popPage={this.popPage}/>
+      <MyPage key="0" title="Navigator" insertPage={this.insertPage} popPage={this.popPage}/>
     </OnsNavigator>
   }
 });

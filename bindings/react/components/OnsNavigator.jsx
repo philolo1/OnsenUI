@@ -1,5 +1,6 @@
 var OnsNavigator = React.createClass({
   componentDidMount: function() {
+    console.log('mount');
     var node = ReactDOM.findDOMNode(this);
     var page = this.props.children;
 
@@ -18,16 +19,17 @@ var OnsNavigator = React.createClass({
        }
 
        if (this.insert) {
-          for (var i=0; i < node.firstChild._pages.length; i++) {
-            node.firstChild._pages[i].element = node.firstChild.children[i];
-          }
+          // for (var i=0; i < node.firstChild._pages.length; i++) {
+          //   node.firstChild._pages[i].element = node.firstChild.children[i];
+          // }
        }
 
        lastLink(navigatorElement, target, options, callback);
+       console.log('link finished');
     }.bind(this);
 
      this.elements = [];
-     this.elements.push({elem: this.props.children});
+     this.elements.push({elem:this.props.children});
     
      this.myDom = ReactDOM.render(
        <ons-navigator {...this.props}>
@@ -62,26 +64,26 @@ var OnsNavigator = React.createClass({
   render: function() {
     return <div />;
   }, 
-  componentWillReceiveProps: function(newProps) {
-    var props = newProps || this.props;
-
-    var help = [];
-    this.elements = [];
-    this.elements.push({elem: props.children});
-
-    for (var i =0; i < this.elements.length; i++) {
-      help.push(this.elements[i].elem);
-    }
-
-    var node = ReactDOM.findDOMNode(this);
-
-    ReactDOM.render(
-      <ons-navigator >
-        {help}
-      </ons-navigator>, 
-      node
-    );
-  },
+  // componentWillReceiveProps: function(newProps) {
+  //   var props = newProps || this.props;
+  //
+  //   var help = [];
+  //   this.elements = [];
+  //   this.elements.push({elem: props.children});
+  //
+  //   for (var i =0; i < this.elements.length; i++) {
+  //     help.push(this.elements[i].elem);
+  //   }
+  //
+  //   var node = ReactDOM.findDOMNode(this);
+  //
+  //   ReactDOM.render(
+  //     <ons-navigator >
+  //       {help}
+  //     </ons-navigator>, 
+  //     node
+  //   );
+  // },
 
 
   insertComponent: function(reactPage) {
@@ -95,31 +97,36 @@ var OnsNavigator = React.createClass({
     var node =  ReactDOM.findDOMNode(this)
 
     console.log('elements');
-    this.elements.push({elem: reactPage});
+
+    console.log(this.elements);
+
+
+    this.elements.splice(0, 0, {elem: reactPage});
+
+    console.log(this.elements);
+
     var help = [];
     for (var i =0; i < this.elements.length; i++) {
       help.push(this.elements[i].elem);
     }
 
     var elements = this.elements;
-
-    node.firstChild.insertPage(-1, '', {hoge: 'hoge', pageHTML: htmlString})
-                   .then(function() {
-       
+    //
+    node.firstChild.insertPage(-1, '', {pageHTML: htmlString})
+    .then(function() {
        var node2 =ReactDOM.render(
          <ons-navigator >
            {help}
          </ons-navigator>, 
          node
        );
-
-       console.log('elements length:');
-       console.log(elements.length);
-
-       node2._pages[elements.length-2].element = 
-         node2.children[elements.length-1];
-       node2.removeChild(node2.children[elements.length-2]);
+       node.firstChild._pages[0].element = node.firstChild.children[0];
+       node.firstChild._pages[1].element = node.firstChild.children[2];
+       node.firstChild.removeChild(node.firstChild.children[1]);
     });
+
+
+
   },
 
 
@@ -129,7 +136,7 @@ var OnsNavigator = React.createClass({
       throw new Error("The component that react pushes needs to render to <ons-page>");
     }
 
-    this.elements.push({elem: reactPage});
+     this.elements.push({elem:reactPage});
 
     var htmlString = ReactDOMServer.renderToStaticMarkup(reactPage);
 

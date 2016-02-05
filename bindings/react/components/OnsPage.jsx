@@ -1,6 +1,7 @@
 var OnsPage = React.createClass({
 
   render: function() {
+    console.log('render page');
     var toolbar;
     var otherChildren = [];
 
@@ -12,7 +13,7 @@ var OnsPage = React.createClass({
       }
     });
 
-    return <ons-page   {...this.props}  _compiled >
+    return <ons-page   {...this.props}  _compiled="true" >
         {toolbar}
         <div className="page__background"> </div>
         <div className="page__content">
