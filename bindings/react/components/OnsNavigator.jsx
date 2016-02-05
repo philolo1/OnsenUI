@@ -87,7 +87,11 @@ var OnsNavigator = React.createClass({
   },
 
 
-  insertComponent: function(reactPage) {
+  insertComponent: function(reactPage, insertPos) {
+
+    var node =  ReactDOM.findDOMNode(this)
+    insertPos = node.firstChild._normalizeIndex(insertPos);
+
     console.log('insert');
     this.insert = true;
     if (!reactUtil.rendersToOnsPage(reactPage)) {
@@ -95,14 +99,13 @@ var OnsNavigator = React.createClass({
     }
 
     var htmlString = ReactDOMServer.renderToStaticMarkup(reactPage);
-    var node =  ReactDOM.findDOMNode(this)
 
     console.log('elements');
 
     console.log(this.elements);
 
 
-    this.elements.splice(this.elements.length -1, 0, {elem: reactPage});
+    this.elements.splice(insertPos, 0, {elem: reactPage});
 
     console.log(this.elements);
 
@@ -112,7 +115,7 @@ var OnsNavigator = React.createClass({
     }
 
     var elements = this.elements;
-    node.firstChild.insertPage(-1, '', {pageHTML: htmlString})
+    node.firstChild.insertPage(insertPos, '', {pageHTML: htmlString})
     .then(function() {
        var node2 =ReactDOM.render(
          <ons-navigator >
@@ -123,10 +126,10 @@ var OnsNavigator = React.createClass({
 
        for (var i=0; i < elements.length -1; i++) {
           var index = i;
-          if (index >= elements.length-1) index++;
+          if (index >= insertPos + 1) index++;
             node.firstChild._pages[i].element = node.firstChild.children[index];
           }
-          node.firstChild.removeChild(node.firstChild.children[elements.length-1]);
+          node.firstChild.removeChild(node.firstChild.children[insertPos+1]);
        });
   },
 
