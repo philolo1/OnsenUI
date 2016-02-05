@@ -1,6 +1,5 @@
 var OnsNavigator = React.createClass({
   componentDidMount: function() {
-    console.log('mount');
     var node = ReactDOM.findDOMNode(this);
     var page = this.props.children;
 
@@ -16,12 +15,6 @@ var OnsNavigator = React.createClass({
 
       if (node.firstChild._pages.length == 1 && !this.insert) {
           node.firstChild.innerHTML = node.firstChild._initialHTML;
-       }
-
-       if (this.insert) {
-          // for (var i=0; i < node.firstChild._pages.length; i++) {
-          //   node.firstChild._pages[i].element = node.firstChild.children[i];
-          // }
        }
 
        lastLink(navigatorElement, target, options, callback);
@@ -92,22 +85,13 @@ var OnsNavigator = React.createClass({
     var node =  ReactDOM.findDOMNode(this)
     insertPos = node.firstChild._normalizeIndex(insertPos);
 
-    console.log('insert');
     this.insert = true;
     if (!reactUtil.rendersToOnsPage(reactPage)) {
       throw new Error("The component that react inserts needs to render to <ons-page>");
     }
 
     var htmlString = ReactDOMServer.renderToStaticMarkup(reactPage);
-
-    console.log('elements');
-
-    console.log(this.elements);
-
-
     this.elements.splice(insertPos, 0, {elem: reactPage});
-
-    console.log(this.elements);
 
     var help = [];
     for (var i =0; i < this.elements.length; i++) {
@@ -115,14 +99,15 @@ var OnsNavigator = React.createClass({
     }
 
     var elements = this.elements;
-    node.firstChild.insertPage(insertPos, '', {pageHTML: htmlString})
-    .then(function() {
-       var node2 =ReactDOM.render(
-         <ons-navigator >
-           {help}
-         </ons-navigator>, 
-         node
-       );
+    node.firstChild.insertPage( insertPos, '', {pageHTML: htmlString})
+      .then(function() {
+        this.insert = false;
+        var node2 =ReactDOM.render(
+          <ons-navigator >
+            {help}
+          </ons-navigator>, 
+          node
+        );
 
        for (var i=0; i < elements.length -1; i++) {
           var index = i;
@@ -130,21 +115,17 @@ var OnsNavigator = React.createClass({
             node.firstChild._pages[i].element = node.firstChild.children[index];
           }
           node.firstChild.removeChild(node.firstChild.children[insertPos+1]);
-       });
+       }.bind(this));
   },
 
-
   pushComponent: function(reactPage) {
-    console.log('push component');
     if (!reactUtil.rendersToOnsPage(reactPage)) {
       throw new Error("The component that react pushes needs to render to <ons-page>");
     }
 
-     this.elements.push({elem:reactPage});
+    this.elements.push({elem:reactPage});
 
     var htmlString = ReactDOMServer.renderToStaticMarkup(reactPage);
-
-    var elements = this.elements;
 
     var node =  ReactDOM.findDOMNode(this)
     node.firstChild._pushPage(null, {pageHTML: htmlString}).then(function() {
@@ -164,63 +145,4 @@ var OnsNavigator = React.createClass({
        node2.removeChild(node2.children[elements.length]);
     });
   },
-
-  // pushTemplate: function(templateComponent) {
-  //   var templateNode = ReactDOM.findDOMNode(templateComponent);
-  //
-  //   var node = ReactDOM.findDOMNode(this);
-  //   var templatePage = templateComponent.props.children;
-  //
-  //   if (!reactUtil.isOnsPage(templatePage)) {
-  //     throw new Error("OnsNavigator has to contain exactly one child of type OnsPage");
-  //   }
-  //
-  //   var prevStyle = el.props.style;
-  //
-  //   if (prevStyle) {
-  //     prevStyle.display = 'none' ;
-  //   } else {
-  //     prevStyle = {display: 'none'}
-  //   }
-  //
-  //   var myChildren =  React.cloneElement(el, {
-  //     style: prevStyle
-  //   });
-  //
-  //   var pageNumber = node.firstChild.pages.length;
-  //
-  //   var self = this;
-  //
-  //   var help = [];
-  //
-  //   for (var i =0; i < this.elements.length; i++) {
-  //     help.push(this.elements[i].elem);
-  //   }
-  //
-  //   help.push(myChildren);
-  //
-  //
-  //     var node2 =ReactDOM.render(
-  //       <ons-navigator >
-  //         {help}
-  //       </ons-navigator>, 
-  //       node
-  //     );
-  //
-  //     var myFun = function(event) {
-  //       document.removeEventListener("init", myFun);
-  //           var html =  node2.children[pageNumber].outerHTML;
-  //           html = html.replace('display:none;', '');
-  //         
-  //           var onsNode = node.firstChild;
-  //
-  //           onsNode._pushPage(null, {pageHTML: html}).then(function() {
-  //                node2.removeChild(node2.children[pageNumber]);
-  //             }
-  //           );
-  //   };
-  //
-  //   document.addEventListener("init", myFun);
-  //   this.elements.push({elem: templateComponent.props.children});
-  // }, 
 });

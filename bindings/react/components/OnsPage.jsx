@@ -1,7 +1,5 @@
 var OnsPage = React.createClass({
-
   render: function() {
-    console.log('render page');
     var toolbar;
     var otherChildren = [];
 
