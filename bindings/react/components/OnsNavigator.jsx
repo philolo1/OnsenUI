@@ -124,6 +124,7 @@ var OnsNavigator = React.createClass({
     }
 
     this.elements.push({elem:reactPage});
+    var elements = this.elements;
 
     var htmlString = ReactDOMServer.renderToStaticMarkup(reactPage);
 
