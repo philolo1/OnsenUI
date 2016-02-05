@@ -13,13 +13,19 @@ var MyPage = React.createClass({
 
     return <OnsPage>
       <ons-toolbar>
-        <div className="left"><ons-back-button>Back</ons-back-button></div>
         <div className="center"> {this.props.title} </div>
       </ons-toolbar>
       <div style={{textAlign: 'center'}}>
         <br />
-      <ons-button modifier="light" onClick={this.props.insertPage}> 
-        Insert Page to Background 
+
+      <ons-button modifier="light" onClick={this.props.insertPageBack}> 
+        Insert Page to Background  (First)
+      </ons-button>
+
+      <br />
+
+      <ons-button modifier="light" onClick={this.props.insertPageFront}> 
+        Insert Page to Background  (Last)
       </ons-button>
       <br />
      <ons-button modifier="light" onClick={this.props.popPage}> 
@@ -30,38 +36,6 @@ var MyPage = React.createClass({
     </OnsPage>
   }
 });
-
-var MyPage2 = React.createClass({
-  getInitialState: function() {
-      return { };
-  },
-  pushPage : function() {
-   this.props.pushPage();
-  },
-  popPage : function() {
-   this.props.popPage();
-  },
-  pushButton: function() {
-   console.log('push button'); 
-  },
-
-  render: function() {
-    console.log('button rendered');
-
-    return <OnsPage>
-      <ons-toolbar>
-        <div className="center"> {this.props.title} </div>
-      </ons-toolbar>
-      <div style={{textAlign: 'center'}}>
-        <br />
-      <ons-button  onClick={this.pushButton}> 
-        Push me 
-      </ons-button>
-
-      </div>
-    </OnsPage>
-  }
-})
 
 
 var MyNav  = React.createClass({
@@ -74,10 +48,7 @@ var MyNav  = React.createClass({
     this.refs.navi.popPage();
   },
 
-  insertPage: function() {
-    //this.refs.nav
-    console.log('insert in background');
-    console.log(this.refs.navi)
+  insertPage: function(pos) {
     this.counter++;
     var counterStr = ""+ this.counter;
     var Title = "Back Page " + this.counter;
@@ -86,13 +57,21 @@ var MyNav  = React.createClass({
     this.refs.navi.insertComponent(
       <MyPage key={counterStr} title={Title}
         insertPage={this.insertPage} popPage={this.popPage}
-      />
+      />, pos
     );
   },
+
+
   
   render: function() {
     return <OnsNavigator ref="navi">
-      <MyPage key="0" title="Navigator" insertPage={this.insertPage} popPage={this.popPage}/>
+      <MyPage key="0" 
+        title="Navigator" 
+        insertPageFront={this.insertPage.bind(this, 0)}
+        insertPageBack={this.insertPage.bind(this,-1)}
+        popPage={this.popPage}
+        
+        popPage={this.popPage}/>
     </OnsNavigator>
   }
 });
